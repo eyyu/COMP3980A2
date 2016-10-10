@@ -1,4 +1,4 @@
-CXXFLAGS = -Wall -Wextra -pedantic -pipe -std=c++14 -O0 
+CXXFLAGS = -Wall -Wextra -pedantic -pipe -std=c++14 -O0
 APPNAME := a3
 ODIR := bin
 SRC := src
@@ -13,7 +13,7 @@ DEPS := $(EXEC).d
 # Prereqs are all .o files in the bin folder; assuming each source .cpp file is turned into a .o
 all: $(patsubst $(SRCOBJS), $(OBJS), $(SRCWILD))
 # Command takes all bin .o files and creates an executable called chess in the bin folder
-	$(CXX) $^ -o $(EXEC)
+	$(CXX) $^ -lgps -o $(EXEC)
 
 directories: $(ODIR)
 
@@ -45,5 +45,5 @@ $(OBJS): $(SRCOBJS)
 
 # Deletes the executable and all .o files in the bin folder
 clean:
-	$(RM) $(EXEC).exe $(wildcard $(ODIR)/*.d*) $(wildcard $(ODIR)/*.o)
+	$(RM) $(EXEC) $(EXEC).exe $(wildcard $(ODIR)/*.d*) $(wildcard $(ODIR)/*.o)
 
