@@ -1,4 +1,5 @@
 #include "headers/dcgps.h"
+#include "headers/gps-utils.h"
 #include <libgpsmm.h>
 #include <iostream>
 
@@ -11,4 +12,6 @@ int main(void) {
         std::cerr << "No GPSD running." << std::endl;
         return 1;
     }
+
+    startReading(gpsData);
 }
