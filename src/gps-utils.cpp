@@ -6,7 +6,8 @@
 
 using namespace std;
 
-void startReading(gpsmm& gpsData) {
+void startReading(gpsmm& gpsData) 
+{
     thread readThread(readLoop, gpsData);
 }
 
@@ -15,9 +16,12 @@ void startReading(gpsmm& gpsData) {
  * Documentation suggests that it returns null on failure, but it might also return void
  * No obvious last error method to call either
  */
-void readLoop(gpsmm gpsData) {
-    for (;;) {
-        if (!gpsData.read()) {
+void readLoop(gpsmm gpsData) 
+{
+    for (;;) 
+    {
+        if (!gpsData.read()) 
+        {
 
         }
     }
