@@ -45,10 +45,3 @@ int main(void) {
     startReading(gpsData);
 }
 
-/*
- * JA - Void method can't return, not sure of the point of this method unless you are
- * planning on sending a SIGTERM signal to kill the program here.
- */
-void exitProgram (string errStr) {
-    cerr << errStr << endl;
-} 
