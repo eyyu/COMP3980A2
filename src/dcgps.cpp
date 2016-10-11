@@ -29,16 +29,12 @@
 
 using namespace std;
 
-/** EY - 1 : should this be here instead of on line 2 and have a new instead? **/
-//gpsmm gpsData; 
-
-
 /** EY - 2 : added a string const for easier management**/ 
 static const string HOST = "localhost";
 
 
 int main(void) {
-	gpsmm gpsData(HOST, DEFAULT_GPSD_PORT);     
+	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);     
     
     if (!gpsData.stream(WATCH_ENABLE | WATCH_JSON)) {
         cerr << "No GPSD running." << endl;
@@ -49,20 +45,10 @@ int main(void) {
     startReading(gpsData);
 }
 
-/** EY - 3 : added a exitProgram Function to lessen the load for 
-	main function , optional Error message can bne passed in
-	this can be used to replace lines 44-45
-	NOTE: might be better in utils cpp file  **/ 
-void exitProgram (string errStr); 
-{
-	if (errStr){
-		cerr << errStr << endl;
- 		// if there is free data ~gpsmm()
-		return 1;
- 	}
-	else 
-	{
-		// if there is free data ~gpsmm()
-		return 0;	
-	}
+/*
+ * JA - Void method can't return, not sure of the point of this method unless you are
+ * planning on sending a SIGTERM signal to kill the program here.
+ */
+void exitProgram (string errStr) {
+    cerr << errStr << endl;
 } 
