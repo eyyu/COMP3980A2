@@ -21,6 +21,7 @@
 -- References : https://github.com/jcable/gpsd/blob/master/libgpsmm.h
 ------------------------------------------------------------------------------*/
 
+#include "headers/consts.h"
 #include "headers/dcgps.h"
 #include "headers/gps-utils.h"
 #include <libgpsmm.h>

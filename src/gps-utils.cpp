@@ -1,4 +1,6 @@
+#include "headers/consts.h"
 #include "headers/gps-utils.h"
+#include "headers/gpsprint.h"
 #include <iostream> 
 #include <libgpsmm.h> 
 #include <thread> 
@@ -22,7 +24,10 @@ void readLoop(gpsmm gpsData)
     {
         if (!gpsData.read()) 
         {
-
+            //Failure?
+        } else {
+            //Success?
+           printData(gpsData);
         }
     }
 }
