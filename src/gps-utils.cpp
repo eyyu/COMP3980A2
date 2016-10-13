@@ -20,14 +20,18 @@ void startReading(gpsmm& gpsData)
  */
 void readLoop(gpsmm gpsData) 
 {
+    struct gps_data_t *newData;
     for (;;) 
     {
-        if (!gpsData.read()) 
+        if (!gpsData.waiting(50000000)) {
+            continue;
+        }
+        if ((newData = gpsData.read()) = nullptr) 
         {
-            //Failure?
+            //Failure
         } else {
-            //Success?
-           printData(gpsData);
+            //Success
+           printData(newData);
         }
     }
 }

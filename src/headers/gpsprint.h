@@ -3,6 +3,6 @@
 
 #include <libgpsmm.h> 
 
-void printData(gpsmm& gpsData);
+void printData(gps_data_t *gpsData);
 
 #endif

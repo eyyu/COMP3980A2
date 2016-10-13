@@ -48,78 +48,71 @@ using namespace std;
 -- https://fossies.org/dox/gpsd-3.16/gps_8h_source.html#l02010
 -- https://fossies.org/dox/gpsd-3.16/cgps_8c_source.html
 --------------------------------------------------------------------------*/
-void printData(gpsmm& gpsData) {
-    
-    const char [] USED = {'N', 'Y'};
-    time_t tim = time(nullptr);  
+void printData(struct gps_data_t * gpsData) {
+    //JA - Use enum class instead of const char array - Provides more meaning than arbitrary N and Y
+    const char USED[2] {'N', 'Y'};
+    time_t tim = time(nullptr);
 
-    double 	latititude; // DEBUG : storing vals if necessary -- to be simplified later
+    //JA - If you need to store values for repeated use, define them with the smallest necessary scope
+    double 	latitude; // DEBUG : storing vals if necessary -- to be simplified later
     double 	longitude;  // DEBUG : storing vals if necessary -- to be simplified later
-    double 	altitude;   // DEBUG : storing vals if necessary -- to be simplified later
-    double 	climb;   	// DEBUG : storing vals if necessary -- to be simplified late
     double 	timestamp;  // DEBUG : storing vals if necessary -- to be simplified later
 	
 	double  ssdB; 		// DEBUG : storing vals if necessary -- to be simplified later
 	short 	PRN; 		// DEBUG : storing vals if necessary -- to be simplified later
 	short 	elevation; 	// DEBUG : storing vals if necessary -- to be simplified later
 	short 	azimuth; 	// DEBUG : storing vals if necessary -- to be simplified late
-	bool 	isUsed; 		// DEBUG : storing vals if necessary -- to be simplified later
+	bool 	isUsed; 	// DEBUG : storing vals if necessary -- to be simplified later
     
     //EY - 1 : May I ask, What is this one for?
+    //JA This is to print out the current time is UTC. Don't know if we should use this vs the gps fix time, so I put this one here
     cout << "Current time: " << put_time(gmtime(&tim), "%T") << endl;
     
-    if (gpsData.data()->satellites_visible > 0)
+    if (gpsData->satellites_visible < 0)
     {
     	cerr << "No satellites visible." << endl; 
-    	return; //EY - 2: Erm.. is that all?
+    	return; //EY - 2: Erm.. is that all? JA - Probably yes. Either return or print nothing like Aman showed in the example
     }
 
-
-    if(gpsData.data()->status == STATUS_NO_FIX /*0*/ )
+    if(gpsData->status == STATUS_NO_FIX /*0*/ )
     {
     	cout << "NO FIX." << endl;	
-    	return; //EY - 3: should I retry here? 
+    	return; //EY - 3: should I retry here? JA - Nope, Aman showed a screen of what a failure to get a fix looked like. We should porobably do that
     }
     else 
     {
-	    timestamp = gpsData.data()->skyview_time;
+	    timestamp = gpsData->skyview_time;
 
-    	if(gpsData.data()->fix.mode >1){ /* 2D or 3D */
-		    latitiude = gpsData.data()->fix.latitude;
-            longitude = gpsData.data()->fix.longitude;
+    	if (gpsData->fix.mode >1){ /* 2D or 3D */
+		    latitude = gpsData->fix.latitude;
+            longitude = gpsData->fix.longitude;
     
              cout   << timestamp << ":" 
-                    << " Longitude: " << longitude << ( longitude > 0 ? " N" : " S"); 
-                    << " Latitude: "  << latitude  << ( latitude  > 0 ? " E" : " W");
+                    << " Longitude: " << longitude << (longitude > 0 ? " N" : " S") 
+                    << " Latitude: "  << latitude  << (latitude > 0 ? " E" : " W")
                     << endl;
 
-            if(gpsData.data()->fix.mode > 2){ /* 3D only */
-                altitude  = gpsData.data()->fix.altitude;
-                climb = gpsData.data()->fix.climb;
-                
-                cout << "Altitude: " << altitude
-                     << "\tClimb: "  << climb
+            if(gpsData->fix.mode > 2) { /* 3D only */
+                cout << "Altitude: " << gpsData->fix.altitude
+                     << "\tClimb: "  << gpsData->fix.climb
                      << endl;
-            
             }
         }
 
-        for(int i = 0; i < gpsData.data()->satellites_visible; ++i )
-         {
-            ssdB       = gpsData.data()->skyview[i].ss;
-            PRN        = gpsData.data()->skyview[i].PRN;
-            elevation  = gpsData.data()->skyview[i].elevation;
-            azimuth    = gpsData.data()->skyview[i].azimuth;
-            isUsed     = gpsData.data()->skyview[i].used;
+        for(int i = 0; i < gpsData->satellites_visible; ++i)
+        {
+            ssdB       = gpsData->skyview[i].ss;
+            PRN        = gpsData->skyview[i].PRN;
+            elevation  = gpsData->skyview[i].elevation;
+            azimuth    = gpsData->skyview[i].azimuth;
+            isUsed     = gpsData->skyview[i].used;
         
             cout << "PRN:"              << PRN
                  << "\tElevatation: "   << elevation
                  << "\tAzimuth: "       << azimuth
-                 << "\tSNR: "           << SNR
-                 << "\tUsed: "          << USED[isUsed];
-                 << "\n" << endl;  
-         }
-
+                 << "\tSNR: "           << ssdB
+                 << "\tUsed: "          << USED[isUsed]
+                 << endl << endl;  
+        }
     }
- 
 }
