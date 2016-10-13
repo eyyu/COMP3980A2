@@ -1,4 +1,4 @@
-CXXFLAGS = -Wall -Wextra -pedantic -pipe -std=c++14 -O0
+CXXFLAGS = -Wall -Wextra -pedantic -std=c++14 -O0
 APPNAME := a3
 ODIR := bin
 SRC := src
