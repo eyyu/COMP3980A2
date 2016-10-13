@@ -30,10 +30,23 @@
 
 using namespace std;
 
-/** EY - 2 : added a string const for easier management**/ 
 static const string HOST = "localhost";
-
-
+/*--------------------------------------------------------------------------
+-- FUNCTION: main - program entrance
+--
+-- DATE: OCT. 12, 2016
+--
+-- REVISIONS: Set Version 2.0
+--
+-- DESIGNER: JA / EY
+--
+-- PROGRAMMER: JA
+--
+-- INTERFACE: int main (void )
+--
+-- RETURNS: 
+-- int signifying state at exit 
+--------------------------------------------------------------------------*/
 int main(void) {
 	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);     
     
