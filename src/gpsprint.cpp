@@ -56,8 +56,6 @@ using namespace std;
 --------------------------------------------------------------------------*/
 
 void printData(struct gps_data_t * gpsData) {
-    //JA - Use enum class instead of const char array - Provides more meaning than arbitrary N and Y
-    const char USED[2] {'N', 'Y'};
     time_t tim = time(nullptr);
 
     //JA - If you need to store values for repeated use, define them with the smallest necessary scope
@@ -122,7 +120,7 @@ void printData(struct gps_data_t * gpsData) {
                  << "\tElevatation: "   << elevation
                  << "\tAzimuth: "       << azimuth
                  << "\tSNR: "           << ssdB
-                 << "\tUsed: "          << (isUsed? 'Y' : 'N');
+                 << "\tUsed: "          << (isUsed? 'Y' : 'N')
                  << endl;  
         }
         cout << endl;
