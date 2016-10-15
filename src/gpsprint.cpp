@@ -26,6 +26,8 @@
 #include <ctime> 
 #include <iomanip> 
 
+DEFINE_MEMBER_CHECKER(skyview)
+
 using namespace std;
 /*--------------------------------------------------------------------------
 -- FUNCTION: printData
@@ -110,7 +112,7 @@ void printData(struct gps_data_t * gpsData) {
 
         for(int i = 0; i < gpsData->satellites_visible; ++i)
         {
-            if(hasSkyview<gps_data_t>){
+            if( HAS_MEMBER(gps_data_t, skyview) ){
                 ssdB       = gpsData->skyview[i].ss;
                 PRN        = gpsData->skyview[i].PRN;
                 elevation  = gpsData->skyview[i].elevation;
