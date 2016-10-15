@@ -113,11 +113,11 @@ void printData(struct gps_data_t * gpsData) {
         for(int i = 0; i < gpsData->satellites_visible; ++i)
         {
             if( HAS_MEMBER(gps_data_t, skyview) ){
-                ssdB       = gpsData->skyview[i].ss;
-                PRN        = gpsData->skyview[i].PRN;
-                elevation  = gpsData->skyview[i].elevation;
-                azimuth    = gpsData->skyview[i].azimuth;
-                isUsed     = gpsData->skyview[i].used;
+                // ssdB       = gpsData->skyview[i].ss;
+                // PRN        = gpsData->skyview[i].PRN;
+                // elevation  = gpsData->skyview[i].elevation;
+                // azimuth    = gpsData->skyview[i].azimuth;
+                // isUsed     = gpsData->skyview[i].used;
             }
             else
             {
