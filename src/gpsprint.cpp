@@ -26,24 +26,6 @@
 #include <ctime> 
 #include <iomanip> 
 
-// DEFINE
-#define DEFINE_MEMBER_CHECKER(member) \
-    template<typename T, typename V = bool> \
-    struct has_ ## member : false_type { }; \
-    template<typename T> \
-    struct has_ ## member<T, \
-        typename enable_if< \
-            !is_same<decltype(declval<T>().member), void>::value, \
-            bool \
-            >::type \
-        > : true_type { };
-
-#define HAS_MEMBER(C, member) \
-    has_ ## member<C>::value
-    
-
-DEFINE_MEMBER_CHECKER(skyview)
-
 using namespace std;
 /*--------------------------------------------------------------------------
 -- FUNCTION: printData
@@ -70,6 +52,7 @@ using namespace std;
 -- ISSUE:
 - r pi runs an older version of the api , and "skyview " variable is not found 
 - proposed solution reference for cross - version compatibility: http://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class  
+- additonal issues : compiler issue for undeclared data -- proposed solution -- preprocessor directives 
 --------------------------------------------------------------------------*/
 void printData(struct gps_data_t * gpsData) {
     //JA - Use enum class instead of const char array - Provides more meaning than arbitrary N and Y
@@ -80,12 +63,6 @@ void printData(struct gps_data_t * gpsData) {
     double 	latitude;   // DEBUG : storing vals if necessary -- to be simplified later
     double 	longitude;  // DEBUG : storing vals if necessary -- to be simplified later
     double 	timestamp;  // DEBUG : storing vals if necessary -- to be simplified later
-	
-	double  ssdB; 		// DEBUG : storing vals if necessary -- to be simplified later
-	short 	PRN; 		// DEBUG : storing vals if necessary -- to be simplified later
-	short 	elevation; 	// DEBUG : storing vals if necessary -- to be simplified later
-	short 	azimuth; 	// DEBUG : storing vals if necessary -- to be simplified late
-	bool 	isUsed; 	// DEBUG : storing vals if necessary -- to be simplified later
     
     //EY - 1 : May I ask, What is this one for?
     //JA This is to print out the current time is UTC. Don't know if we should use this vs the gps fix time, so I put this one here
@@ -128,28 +105,25 @@ void printData(struct gps_data_t * gpsData) {
 
         for(int i = 0; i < gpsData->satellites_visible; ++i)
         {
-            if( HAS_MEMBER(gps_data_t, skyview) ){
-                // ssdB       = gpsData->skyview[i].ss;
-                // PRN        = gpsData->skyview[i].PRN;
-                // elevation  = gpsData->skyview[i].elevation;
-                // azimuth    = gpsData->skyview[i].azimuth;
-                // isUsed     = gpsData->skyview[i].used;
-            }
-            else
-            {
-                ssdB       = gpsData->ss[i];
-                PRN        = gpsData->PRN[i];
-                elevation  = gpsData->elevation[i];
-                azimuth    = gpsData->azimuth[i];
-                isUsed     = gpsData->used[i];
-            }
-
-            cout << "PRN:"              << PRN
-                 << "\tElevatation: "   << elevation
-                 << "\tAzimuth: "       << azimuth
-                 << "\tSNR: "           << ssdB
-                 << "\tUsed: "          << (isUsed? 'Y' : 'N');
-                 << endl << endl;  
+                printSatelliteDataHelper(gpsData->PRN[i],
+                                         gpsData->elevation[i],
+                                         gpsData->azimuth[i],
+                                         gpsData->ss[i],
+                                         gpsData->used[i]);
         }
     }
 }
+
+void printSatelliteDataHelper(short PRN,
+                          short elevation,
+                          short azimuth, 
+                          double ssdB, 
+                          bool isUsed)
+{
+    cout << "PRN:"              << PRN
+         << "\tElevatation: "   << elevation
+         << "\tAzimuth: "       << azimuth
+         << "\tSNR: "           << ssdB
+         << "\tUsed: "          << (isUsed? 'Y' : 'N')
+         << endl << endl;    
+} 
