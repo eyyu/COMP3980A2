@@ -41,6 +41,7 @@
 #define HAS_MEMBER(C, member) \
     has_ ## member<C>::value
     
+
 DEFINE_MEMBER_CHECKER(skyview)
 
 using namespace std;
