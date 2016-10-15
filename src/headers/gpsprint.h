@@ -55,7 +55,7 @@ struct hasSkyview
 --------------------------------------------------------------------------*/
 
 template < typename T >
-struct hasSkyview < T, decltype(std::declval<T>.skyview, void() )> 
+struct hasSkyview < T, decltype(std::declval<T>().skyview, void() )> 
 	: std::true_type  { };
 
 #endif
