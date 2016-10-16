@@ -69,11 +69,10 @@ void printData(struct gps_data_t * gpsData) {
     if (gpsData->fix.mode > 1){ /* 2D or 3D */
         double latitude = gpsData->fix.latitude;
         double longitude = gpsData->fix.longitude;
-        double timestamp = gpsData->skyview_time;
-
-        cout   << timestamp << ":" 
-                << " Longitude: " << longitude << (longitude > 0 ? " N" : " S") 
-                << " Latitude: "  << latitude  << (latitude > 0 ? " E" : " W")
+        time_t timestamp = static_cast<time_t>(gpsData->skyview_time);
+        cout   << put_time(gmtime(&timestamp), "%T") << ":" 
+                << " Longitude: " << longitude << (longitude < 0 ? " N" : " S") 
+                << " Latitude: "  << latitude  << (latitude < 0 ? " E" : " W")
                 << endl;
 
         if(gpsData->fix.mode > 2) { /* 3D only */
