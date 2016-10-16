@@ -1,3 +1,21 @@
+/*------------------------------------------------------------------------------
+-- SOURCE FILE: gps-utils.c - holds the read + utility functions for gps program
+--
+-- PROGRAM: gps-utils.cpp
+--
+-- FUNCTIONS:
+-- void startReading (gpsmm& gpsData) 
+--
+-- DATE: Oct. 16, 2016
+--
+-- REVISIONS: version 1.5: Removed
+--
+--
+-- DESIGNER: EY / JA
+--
+-- PROGRAMMER: JA
+-- 
+------------------------------------------------------------------------------*/
 #include "headers/consts.h"
 #include "headers/gps-utils.h"
 #include "headers/gpsprint.h"
@@ -7,7 +25,24 @@
 #include <utility> 
 
 using namespace std;
-
+/*--------------------------------------------------------------------------
+-- FUNCTION: startReading
+--
+-- DATE: OCT. 15, 2016
+--
+-- REVISIONS: Version 1.5
+--
+-- DESIGNER: JA
+--
+-- PROGRAMMER: JA
+--
+-- INTERFACE: void startReading (gpsmm& gpsData)
+-- gpsData  the gps data struct that contains the information read 
+--
+--
+-- NOTES:
+-- No thread required, adding a thread prevents a proper reading 
+--------------------------------------------------------------------------*/
 void startReading(gpsmm& gpsData) 
 {
     struct gps_data_t *newData;
