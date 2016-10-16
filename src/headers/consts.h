@@ -7,5 +7,4 @@
 
 extern bool usedFlags[MAXCHANNELS];
 
-
 #endif

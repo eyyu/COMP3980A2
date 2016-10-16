@@ -5,17 +5,17 @@
 --
 -- FUNCTIONS:
 -- int  main 		( void )
--- void exitProgram ( void )
 --
 -- DATE: Oct. 10, 2016
 --
 -- REVISIONS: 
 -- Version 1.0 Skeleton By JA
 -- Version 1.1 Revision of Skeleton By EY
--
+-- Version 1.2 JA added help flag detection
+--
 -- DESIGNER: JA / EY 
 --
--- PROGRAMMER: 
+-- PROGRAMMER: JA
 --
 -- NOTES:
 -- References : https://github.com/jcable/gpsd/blob/master/libgpsmm.h
@@ -44,7 +44,7 @@ static const string HOST = "localhost";
 -- DESIGNER: JA / EY
 --
 -- PROGRAMMER: JA
---
+-- 
 -- INTERFACE: int main(int argc, char **argv)
 --
 -- RETURNS: 
@@ -53,7 +53,7 @@ static const string HOST = "localhost";
 int main(int argc, char **argv) {
     if (argc > 1) {
        if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
-            cout << "Help text here" << endl;
+            cout << HELP_GUIDE << endl;
        } else {
             cout << "Did you mean \"-h\" or \"--help\"?" <<endl;
        }
@@ -65,7 +65,6 @@ int main(int argc, char **argv) {
     if (!gpsData.stream(WATCH_ENABLE | WATCH_JSON)) {
         cerr << "No GPSD running." << endl;
         return 1;
-
     }
 
     startReading(gpsData);
