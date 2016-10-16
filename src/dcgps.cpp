@@ -27,6 +27,9 @@
 #include <libgpsmm.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cctype>
+#include <cstring>
 
 using namespace std;
 
@@ -42,12 +45,20 @@ static const string HOST = "localhost";
 --
 -- PROGRAMMER: JA
 --
--- INTERFACE: int main (void )
+-- INTERFACE: int main(int argc, char **argv)
 --
 -- RETURNS: 
 -- int signifying state at exit 
 --------------------------------------------------------------------------*/
-int main(void) {
+int main(int argc, char **argv) {
+    if (argc > 1) {
+       if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help")) {
+            cout << "Help text here" << endl;
+       } else {
+            cout << "Did you mean \"-h\" or \"--help\"" <<endl;
+       }
+    }
+
 	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);     
     
     if (!gpsData.stream(WATCH_ENABLE | WATCH_JSON)) {
