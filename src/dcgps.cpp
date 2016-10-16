@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
        if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
             cout << "Help text here" << endl;
        } else {
-            cout << "Did you mean \"-h\" or \"--help\"" <<endl;
+            cout << "Did you mean \"-h\" or \"--help\"?" <<endl;
        }
        return 0;
     }
