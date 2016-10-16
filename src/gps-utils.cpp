@@ -27,7 +27,7 @@ void readLoop(gpsmm gpsData)
         if (!gpsData.waiting(50000000)) {
             continue;
         }
-        if ((newData = gpsData.read()) = nullptr) 
+        if ((newData = gpsData.read()) == NULL) 
         {
             //Failure
         } else {
