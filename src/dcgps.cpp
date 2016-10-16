@@ -52,11 +52,12 @@ static const string HOST = "localhost";
 --------------------------------------------------------------------------*/
 int main(int argc, char **argv) {
     if (argc > 1) {
-       if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help")) {
+       if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
             cout << "Help text here" << endl;
        } else {
             cout << "Did you mean \"-h\" or \"--help\"" <<endl;
        }
+       return 0;
     }
 
 	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);     
