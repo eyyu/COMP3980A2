@@ -1,4 +1,5 @@
-CXX = g++-6
+#CXX = g++-6
+CXX = g++
 CXXFLAGS = -Wall -Wextra -pedantic -std=c++14 -O0
 APPNAME := a3
 ODIR := bin

@@ -48,6 +48,7 @@ void startReading(gpsmm& gpsData)
     struct gps_data_t *newData;
     for (;;) 
     {
+        /*
         if (!gpsData.waiting(50000000)) {
             continue;
         }
@@ -58,5 +59,7 @@ void startReading(gpsmm& gpsData)
             //Success
            printData(newData);
         }
+        */
+        printData(nullptr);
     }
 }

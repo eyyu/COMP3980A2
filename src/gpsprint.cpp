@@ -20,6 +20,7 @@
 
 #include "headers/consts.h"
 #include "headers/gpsprint.h"
+#include "headers/map.h"
 #include <iostream> 
 #include <libgpsmm.h> 
 #include <utility> 
@@ -56,6 +57,17 @@ using namespace std;
 --------------------------------------------------------------------------*/
 
 void printData(struct gps_data_t * gpsData) {
+    static bool mapMade = false;
+    if (!mapMade) {
+        string test = getMap(49, -123);
+        mapMade = true;
+        cout << test << endl;
+        test = getMap(29, 123);
+        mapMade = true;
+        cout << test << endl;
+        return;
+    }
+    return;
     if (gpsData->satellites_visible < 0)
     {
       return; 
@@ -70,6 +82,10 @@ void printData(struct gps_data_t * gpsData) {
         double latitude = gpsData->fix.latitude;
         double longitude = gpsData->fix.longitude;
         time_t timestamp = static_cast<time_t>(gpsData->skyview_time);
+        if (!mapMade) {
+            getMap(latitude, longitude);
+            mapMade = true;
+        }
         cout   << put_time(gmtime(&timestamp), "%T") << ":" 
                 << " Longitude: " << longitude << (longitude < 0 ? " N" : " S") 
                 << " Latitude: "  << latitude  << (latitude < 0 ? " E" : " W")
@@ -84,6 +100,7 @@ void printData(struct gps_data_t * gpsData) {
 
     for(int i = 0; i < gpsData->satellites_visible; ++i)
     {
+        /*
         double  ssdB;     // DEBUG : storing vals if necessary -- to be simplified later
         short   PRN;    // DEBUG : storing vals if necessary -- to be simplified later
         short   elevation;  // DEBUG : storing vals if necessary -- to be simplified later
@@ -102,6 +119,8 @@ void printData(struct gps_data_t * gpsData) {
              << "\tSNR: "           << ssdB
              << "\tUsed: "          << (isUsed? 'Y' : 'N')
                << endl;  
+               */
+        cout << "Stuff goes here" << endl;
     }
     cout << endl;
 }
