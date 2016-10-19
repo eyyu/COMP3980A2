@@ -4,7 +4,7 @@
 -- PROGRAM: gps-utils.cpp
 --
 -- FUNCTIONS:
--- void startReading (gpsmm& gpsData) 
+-- void startReading (gpsmm& gpsData)
 --
 -- DATE: Oct. 16, 2016
 --
@@ -14,15 +14,15 @@
 -- DESIGNER: EY / JA
 --
 -- PROGRAMMER: JA
--- 
+--
 ------------------------------------------------------------------------------*/
 #include "headers/consts.h"
 #include "headers/gps-utils.h"
 #include "headers/gpsprint.h"
-#include <iostream> 
-#include <libgpsmm.h> 
-#include <thread> 
-#include <utility> 
+#include <iostream>
+#include <libgpsmm.h>
+#include <thread>
+#include <utility>
 
 using namespace std;
 /*--------------------------------------------------------------------------
@@ -37,29 +37,29 @@ using namespace std;
 -- PROGRAMMER: JA
 --
 -- INTERFACE: void startReading (gpsmm& gpsData)
--- gpsData  the gps data struct that contains the information read 
+-- gpsData  the gps data struct that contains the information read
 --
 --
 -- NOTES:
--- No thread required, adding a thread prevents a proper reading 
+-- No thread required, adding a thread prevents a proper reading
 --------------------------------------------------------------------------*/
-void startReading(gpsmm& gpsData) 
+void startReading(gpsmm& gpsData)
 {
     struct gps_data_t *newData;
-    for (;;) 
+    for (;;)
     {
-        /*
+
         if (!gpsData.waiting(50000000)) {
             continue;
         }
-        if ((newData = gpsData.read()) == nullptr) 
+        if ((newData = gpsData.read()) == nullptr)
         {
             //Failure
         } else {
             //Success
            printData(newData);
         }
-        */
-        printData(nullptr);
+
+        printData(newData);
     }
 }

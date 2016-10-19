@@ -8,12 +8,12 @@
 --
 -- DATE: Oct. 10, 2016
 --
--- REVISIONS: 
+-- REVISIONS: 2.0 : adding ncurses Eva
 -- Version 1.0 Skeleton By JA
 -- Version 1.1 Revision of Skeleton By EY
 -- Version 1.2 JA added help flag detection
 --
--- DESIGNER: JA / EY 
+-- DESIGNER: JA / EY
 --
 -- PROGRAMMER: JA
 --
@@ -24,12 +24,14 @@
 #include "headers/consts.h"
 #include "headers/dcgps.h"
 #include "headers/gps-utils.h"
+#include "headers/gpsprint.h"
 #include <libgpsmm.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <cctype>
 #include <cstring>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -44,13 +46,15 @@ static const string HOST = "localhost";
 -- DESIGNER: JA / EY
 --
 -- PROGRAMMER: JA
--- 
+--
 -- INTERFACE: int main(int argc, char **argv)
 --
--- RETURNS: 
--- int signifying state at exit 
+-- RETURNS:
+-- int signifying state at exit
 --------------------------------------------------------------------------*/
 int main(int argc, char **argv) {
+
+
     if (argc > 1) {
        if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
             cout << HELP_GUIDE << endl;
@@ -60,13 +64,27 @@ int main(int argc, char **argv) {
        return 0;
     }
 
-	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);     
-    
+
+	gpsmm gpsData(HOST.c_str(), DEFAULT_GPSD_PORT);
+
     if (!gpsData.stream(WATCH_ENABLE | WATCH_JSON)) {
         cerr << "No GPSD running." << endl;
         return 1;
     }
 
-    startReading(gpsData);
-}
+    // Ncurses Terminal Qui Init
+    initscr();  // creates a standard screen
+    cbreak();
+    clear();
+    noecho();
+    keypad(stdscr, TRUE);
+    start_color();
+    refresh();
 
+
+    startReading(gpsData);
+
+    getch();    //ensures it does not close
+    endInnerWin(); // in gpsprint
+    endwin(); // close window
+}

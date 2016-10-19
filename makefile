@@ -15,7 +15,7 @@ DEPS := $(EXEC).d
 # Prereqs are all .o files in the bin folder; assuming each source .cpp file is turned into a .o
 all: $(patsubst $(SRCOBJS), $(OBJS), $(SRCWILD))
 # Command takes all bin .o files and creates an executable called chess in the bin folder
-	$(CXX) $^ -lgps -pthread -o $(EXEC)
+	$(CXX) $^ -lgps -pthread -lncurses -o $(EXEC)
 
 directories: $(ODIR)
 
@@ -48,4 +48,3 @@ $(OBJS): $(SRCOBJS)
 # Deletes the executable and all .o files in the bin folder
 clean:
 	$(RM) $(EXEC) $(EXEC).exe $(wildcard $(ODIR)/*.d*) $(wildcard $(ODIR)/*.o)
-
