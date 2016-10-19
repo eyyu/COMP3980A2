@@ -4,10 +4,10 @@
 -- PROGRAM: gpsprint
 --
 -- FUNCTIONS:
--- void printData (gpsmm&)
+-- string getMap (const double latitude, const double longitude)
 --
 --
--- DATE: Oct. 12, 2016
+-- DATE: Oct. 17, 2016
 --
 -- REVISIONS:
 -- v1   - JA
@@ -36,6 +36,25 @@
 
 using namespace std;
 
+/*--------------------------------------------------------------------------
+-- FUNCTION: getMap
+--
+-- DATE: OCT. 18, 2016
+--
+-- REVISIONS: Set Version 2.0
+--
+-- DESIGNER: John A
+--
+-- PROGRAMMER: John A
+--
+-- INTERFACE: string getMap(const double latitude, const double longitude)
+--
+-- RETURNS: 
+-- a string calue representing the entire ascii map
+--
+-- NOTES:
+-- using the asciiworld as a lib : https://github.com/vain/asciiworld 
+--------------------------------------------------------------------------*/
 string getMap(const double latitude, const double longitude) {
     FILE *in;
     char buff[512];
@@ -45,7 +64,7 @@ string getMap(const double latitude, const double longitude) {
     coordFile << "points" << endl  << latitude << " " << longitude << endl;
     coordFile.close();
 
-    if(!(in = popen("./asciiworld -h 14 -l coords.txt", "r"))){
+    if(!(in = popen("./asciiworld.exe -h 14 -l coords.txt", "r"))){
         return "";
     }
 

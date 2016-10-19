@@ -44,7 +44,8 @@ static int win_width;
 --
 -- DESIGNER: EY / JA
 --
--- PROGRAMMER: v1.2 JA
+-- PROGRAMMER: 2.0 EY ( Ncurses implmentation)
+-- v1.2 JA
 -- v1.1 EY
 -- v1.0 - JA
 --
@@ -52,14 +53,11 @@ static int win_width;
 -- pointer to a struct containing the gps data received from the dongle
 --
 -- NOTES:
+-- v.2 Ncurses Qui Implmentation with Ascii map plotting
 -- v.1  design is simple, jsut to ensure basic functionality works
 -- References:
 -- https://fossies.org/dox/gpsd-3.16/gps_8h_source.html#l02010
 -- https://fossies.org/dox/gpsd-3.16/cgps_8c_source.html
---
--- ISSUE:
--- raspberry pi runs an older version of the api, and "skyview" variable is not found
--- proposed solution reference for cross - version compatibility: http://stackoverflow.com/questions/1005476/how-to-detect-whether-there-is-a-specific-member-variable-in-class
 --------------------------------------------------------------------------*/
 
 void printData(struct gps_data_t * gpsData) {
@@ -97,19 +95,34 @@ void printData(struct gps_data_t * gpsData) {
     printGPSWin(gpsWin, gpsData);
     printSattelitesFound(satteliteWin, gpsData);
 
-    // if (gpsData->fix.mode > 1)
-    // {
+    if (gpsData->fix.mode > 1)
+    {
       if(!mapMade)
       {
         printMapWin(mapWin, gpsData);
         mapMade = true;
       }
       return;
-    // }
+    }
 
 
 }
-
+ /*--------------------------------------------------------------------------
+ -- FUNCTION: endInnerWin
+ --
+ -- DATE: OCT. 19, 2016
+ --
+ -- REVISIONS: Version 2.0
+ --
+ -- DESIGNER: Eva Yu
+ --
+ -- PROGRAMMER: Eva Yu
+ --
+ -- INTERFACE: [void] [endInnerWin] (void)
+ --
+ -- NOTES:
+ -- kills all windows that are not needed
+ --------------------------------------------------------------------------*/
 void endInnerWin()
 {
   delwin(gpsWin);
@@ -117,6 +130,22 @@ void endInnerWin()
   delwin(mapWin);
 }
 
+ /*--------------------------------------------------------------------------
+ -- FUNCTION: makeWin
+ --
+ -- DATE: OCT. 19, 2016
+ --
+ -- REVISIONS: Version 2.0
+ --
+ -- DESIGNER: Eva Yu
+ --
+ -- PROGRAMMER: Eva Yu
+ --
+ -- INTERFACE: WINDOW * makeWin (WINDOW * win, int lines, int width, int x , int y)
+ --
+ -- NOTES:
+ -- builds a window and displays border
+ --------------------------------------------------------------------------*/
 WINDOW * makeWin (WINDOW * win, int lines, int width, int x , int y)
 {
   win = newwin(lines, width-1, x, y);
@@ -125,6 +154,22 @@ WINDOW * makeWin (WINDOW * win, int lines, int width, int x , int y)
   return win;
 }
 
+ /*--------------------------------------------------------------------------
+ -- FUNCTION: printGPSWin
+ --
+ -- DATE: OCT. 19, 2016
+ --
+ -- REVISIONS: Version 2.0
+ --
+ -- DESIGNER: Eva Yu
+ --
+ -- PROGRAMMER: Eva Yu
+ --
+ -- INTERFACE: void printGPSWin(WINDOW * win, gps_data_t * gpsData)
+ --
+ -- NOTES:
+ -- prints the GPS fix data
+ --------------------------------------------------------------------------*/
 void printGPSWin(WINDOW * win, gps_data_t * gpsData)
 {
   time_t timestamp = static_cast<time_t>(gpsData->skyview_time);
@@ -155,6 +200,23 @@ void printGPSWin(WINDOW * win, gps_data_t * gpsData)
   wrefresh(win);
 }
 
+ /*--------------------------------------------------------------------------
+ -- FUNCTION: printSatteliteWin
+ --
+ -- DATE: OCT. 19, 2016
+ --
+ -- REVISIONS: Version 2.0
+ --
+ -- DESIGNER: Eva Yu
+ --
+ -- PROGRAMMER: Eva Yu
+ --
+ -- INTERFACE: void printSatteliteWin(WINDOW * win, gps_data_t * gpsData)
+ --
+ -- NOTES:
+ -- prints the GPS sattellites labels
+ --------------------------------------------------------------------------*/
+
 void printSatteliteWin(WINDOW * win)
 {
   refresh();
@@ -166,6 +228,22 @@ void printSatteliteWin(WINDOW * win)
   wrefresh  ( win );
 }
 
+ /*--------------------------------------------------------------------------
+ -- FUNCTION: printSattelitesFound
+ --
+ -- DATE: OCT. 19, 2016
+ --
+ -- REVISIONS: Version 2.0
+ --
+ -- DESIGNER: Eva Yu
+ --
+ -- PROGRAMMER: Eva Yu
+ --
+ -- INTERFACE: void printSattelitesFound(WINDOW * win, gps_data_t * gpsData)
+ --
+ -- NOTES:
+ -- prints the GPS sattellites data ( skyview is gpsd version dependent)
+ --------------------------------------------------------------------------*/
 void printSattelitesFound(WINDOW * win, gps_data_t * gpsData)
 {
   refresh();
@@ -174,17 +252,17 @@ void printSattelitesFound(WINDOW * win, gps_data_t * gpsData)
 //  for(int i = 0; i < gpsData->satellites_visible; ++i, ++line)
   for (int i = 0; i < gpsData->satellites_visible; ++i, ++line)
   {
-    mvwprintw ( win, line, 1,              "%d", gpsData->skyview[i].PRN );
-    mvwprintw ( win, line, win_width / 5,      "%d", gpsData->skyview[i].elevation );
-    mvwprintw ( win, line, win_width / 5 * 2,  "%d", gpsData->skyview[i].azimuth );
-    mvwprintw ( win, line, win_width / 5 * 3,  "%f", gpsData->skyview[i].ss );
-    mvwprintw ( win, line, win_width / 5 * 4,  (gpsData->skyview[i].used ? "Y" : "N") );
+    // mvwprintw ( win, line, 1,              "%d", gpsData->skyview[i].PRN );
+    // mvwprintw ( win, line, win_width / 5,      "%d", gpsData->skyview[i].elevation );
+    // mvwprintw ( win, line, win_width / 5 * 2,  "%d", gpsData->skyview[i].azimuth );
+    // mvwprintw ( win, line, win_width / 5 * 3,  "%f", gpsData->skyview[i].ss );
+    // mvwprintw ( win, line, win_width / 5 * 4,  (gpsData->skyview[i].used ? "Y" : "N") );
 
-    // mvwprintw ( win, line, 1,              "%f", gpsData->PRN[i] );
-    // mvwprintw ( win, line, win_width / 5,      "%d", gpsData->elevation[i] );
-    // mvwprintw ( win, line, win_width / 5 * 2,  "%d", gpsData->azimuth[i] );
-    // mvwprintw ( win, line, win_width / 5 * 3,  "%d", gpsData->ss[i] );
-    // mvwprintw ( win, line, win_width / 5 * 4,  (gpsData->used[i]? "Y" : "N") );
+    mvwprintw ( win, line, 1,              "%f", gpsData->PRN[i] );
+    mvwprintw ( win, line, win_width / 5,      "%d", gpsData->elevation[i] );
+    mvwprintw ( win, line, win_width / 5 * 2,  "%d", gpsData->azimuth[i] );
+    mvwprintw ( win, line, win_width / 5 * 3,  "%d", gpsData->ss[i] );
+    mvwprintw ( win, line, win_width / 5 * 4,  (gpsData->used[i]? "Y" : "N") );
   }
   wrefresh(win);
 }
@@ -195,7 +273,7 @@ void printMapWin(WINDOW * win, gps_data_t * gpsData)
   longitude = gpsData->fix.longitude;
   latitude  = gpsData->fix.latitude;
 
-  const char * marker = "\033[38;5;196mX\033[0m";
+  const char * marker = "\033[38;5;196mX\033[0m"; // the linux ascii colored string
   string mapStr = getMap(longitude,latitude); // get string representing map
 
   char mapStrPtr [mapStr.length() + 1]; // reserve char array for string
@@ -206,6 +284,8 @@ void printMapWin(WINDOW * win, gps_data_t * gpsData)
 
   while (mapline != NULL ) {
     char * xPtr;
+
+    //Check to see if line has the marker string to get rid of it
     if( ( xPtr = strstr(mapline, marker) ) != nullptr) {
 
         init_pair(3, COLOR_RED,   COLOR_BLACK);
@@ -223,7 +303,10 @@ void printMapWin(WINDOW * win, gps_data_t * gpsData)
         wattroff(win, COLOR_PAIR(3));
 
         /* second half of string after marker*/
-        strncpy(substr, xPtr + strlen(marker), strlen(mapline) - strlen(marker) - colOfX + 1 );
+        strncpy(substr, 
+            xPtr + strlen(marker),
+            strlen(mapline) - strlen(marker) - colOfX + 1 );
+        
         mvwprintw( win, y , colOfX+1 , substr );
     }
     else

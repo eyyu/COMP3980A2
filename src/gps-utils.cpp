@@ -8,7 +8,8 @@
 --
 -- DATE: Oct. 16, 2016
 --
--- REVISIONS: version 1.5: Removed
+-- REVISIONS: Version 2.0 for ncurses changes
+-- version 1.5: Removed thread
 --
 --
 -- DESIGNER: EY / JA
@@ -55,6 +56,8 @@ void startReading(gpsmm& gpsData)
         if ((newData = gpsData.read()) == nullptr)
         {
             //Failure
+            cerr << "Timeout on reading."
+            return;
         } else {
             //Success
            printData(newData);
