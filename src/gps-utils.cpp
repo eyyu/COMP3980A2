@@ -56,11 +56,11 @@ void startReading(gpsmm& gpsData)
         if ((newData = gpsData.read()) == nullptr)
         {
             //Failure
-            cerr << "Timeout on reading."
+            cerr << "Timeout on reading.";            
             return;
         } else {
-            //Success
            printData(newData);
+            //Success
         }
 
         printData(newData);
